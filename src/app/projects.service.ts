@@ -8,9 +8,17 @@ import { Observable } from 'rxjs';
 })
 export class ProjectsService {
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {
+    debugger;
+   }
 
   getAllProjects() : Observable<Project[]>{
+    debugger;
     return this.httpClient.get<Project[]>("/api/projects");
   }
+
+  insertProject(newProject:Project): Observable<Project>{
+    return this.httpClient.post<Project>("api/projects", newProject);
+  }
+
 }
