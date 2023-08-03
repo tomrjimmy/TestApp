@@ -1,6 +1,30 @@
 <h1>Projects</h1>
 <div class="row">
   <div class="col-8 mx-auto">
+    <div class="form-group form-row">
+      <label for="drpSearchBy" class="col-form-label col-3">Search By</label>
+      <div class="col-9">
+        <select class="drpSearchBy" id="drpSearchBy" name="SearchBy" [(ngModel)]="searchBy">
+          <option value="ProjectId">Project Id</option>
+          <option value="ProjectName">Project Name</option>
+          <option value="StartDate">Start Date</option>
+          <option value="TeamSize">Team Size</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group form-row">
+      <label for="txtSearch" class="col-form-label col-3">Search:</label>
+      <div class="col-9">
+        <div class="input-group">
+          <input type="text" class="form-control" id="txtSearch" name="SearchText" [(ngModel)]="searchText">
+          <div class="input-group-append" (click)="onSearchClick()">
+            <span class="input-group-text"><i class="fa fa-search"></i></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-8 mx-auto">
     <button class="btn btn-primary" data-toggle="modal" data-target="#newModal">Create Project</button>
   </div>
   <div class="col-8 mx-auto">
@@ -10,13 +34,25 @@
         <th>Project Name</th>
         <th>Date of Start</th>
         <th>Team Size</th>
+        <th>Actions</th>
       </thead>
       <tbody>
-        <tr *ngFor="let project of projects">
+        <tr *ngFor="let project of projects; let i= index">
           <td>{{project.projectId}}</td>
           <td>{{project.projectName}}</td>
           <td>{{project.startDate}}</td>
           <td>{{project.teamSize}}</td>
+          <td>
+            <button class="btn btn-info" 
+            (click)="onEditClick($event, i)"
+            data-toggle="modal" 
+            data-target="#editModal">Edit</button>
+            &nbsp;
+            <button class="btn btn-info" 
+            (click)="onDeleteClick($event, i)"
+            data-toggle="modal" 
+            data-target="#deleteModal">Delete</button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -74,3 +110,89 @@
   </div>
 </form>
 
+<!-- Edit Project -->
+<form>
+  <div class="modal" role="dialog" id="editModal">
+    <div class="modal-dialog">
+      <div class="modal-content" style="width:700px">
+        <div class="modal-header">
+          <div class="modal-title">Edit Project</div>
+          <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group row">
+            <label for="lblEditProjectID" class="col-sm-4 col-form-label">Project ID</label>
+            <div class="col-sm-8">
+              <input type="number" id="txtEditProjectID" style="width:100px" class="form-control-plain-text" placeholder="Project ID"
+                name="ProjectID" [(ngModel)]="editProject.projectId" disabled="disabled">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="lblEditProjectName" class="col-sm-4 col-form-label">Project Name</label>
+            <div class="col-sm-8">
+              <input type="text" id="txtEditProjectName" class="form-control" placeholder="Project Name"
+                name="ProjectName" [(ngModel)]="editProject.projectName">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="lblEditStartDate" class="col-sm-4 col-form-label">Start Date</label>
+            <div class="col-sm-8">
+              <input type="date" id="txtEditStartDate_{{editProject.projectId}}" style="width:150px" class="form-control"
+                placeholder="Start Date" name="StartDate_{{editProject.projectId}}" [(ngModel)]="editProject.startDate">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="lblEditTeamSize" class="col-sm-4 col-form-label">Team Size</label>
+            <div class="col-sm-8">
+              <input type="number" id="txtEditTeamSize" style="width:150px" class="form-control" placeholder="Team Size"
+                name="TeamSize" [(ngModel)]="editProject.teamSize">
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-warning" data-dismiss="modal">Cancel</button>
+          <button class="btn btn-success" data-dismiss="modal" (click)="onUpdateClick()">Update</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<!-- Delete Project -->
+<form>
+  <div class="modal" role="dialog" id="deleteModal">
+    <div class="modal-dialog">
+      <div class="modal-content" style="width:700px">
+        <div class="modal-header">
+          <div class="modal-title">Delete Project</div>
+          <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group row">
+            <label for="lblDeleteProjectID" class="col-sm-4 col-form-label">Project ID</label>
+            <div class="col-sm-8">
+              <input type="number" id="txtDeleteProjectID" style="width:100px" class="form-control-plain-text" placeholder="Project ID"
+                name="ProjectID" [(ngModel)]="deleteProject.projectId" disabled="disabled">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="lblDeleteProjectName" class="col-sm-4 col-form-label">Project Name</label>
+            <div class="col-sm-8">
+              <input type="text" id="txtDeleteProjectName" class="form-control" placeholder="Project Name"
+                name="ProjectName" [(ngModel)]="deleteProject.projectName" disabled="disabled">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-warning" data-dismiss="modal">Cancel</button>
+          <button class="btn btn-success" data-dismiss="modal" (click)="onDeleteConfirmClick()">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

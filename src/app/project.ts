@@ -1,8 +1,8 @@
 export class Project {
-    projectId: number | any;
-    projectName: string | any;
-    startDate: string | any;
-    teamSize : number| any;
+    projectId: any;
+    projectName: any;
+    startDate: any;
+    teamSize : any;
 
     constructor(){
         this.projectId = 0;
